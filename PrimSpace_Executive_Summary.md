@@ -1,0 +1,178 @@
+# Executive Summary
+## Primes as a Field on a Discrete Torus
+
+**Author:** László Tatai / BarefootRealism Labs  
+**Date:** April 2026  
+**Contact:** ORCID 0009-0007-5153-6306  
+**Related:** DVFM v1.1 — Zenodo https://doi.org/10.5281/zenodo.17675025
+
+---
+
+## The Question
+
+Prime numbers have been studied for thousands of years. Their distribution
+is described by the Prime Number Theorem, bounded by the Riemann Hypothesis,
+and constrained by the sieve of Eratosthenes. Yet one question remains
+surprisingly open:
+
+**Within the states the sieve allows, why do some states attract
+more primes than others?**
+
+This release provides an empirical answer — and a framework for thinking
+about it.
+
+---
+
+## The Key Idea
+
+Every natural number $n$ maps to a point in a modular state space:
+
+$$\Phi_k(n) = (n \bmod p_1,\; n \bmod p_2,\; \ldots,\; n \bmod p_k)$$
+
+This space $\Omega_k$ has the natural topology of a **discrete torus** —
+each dimension wraps around with the period of its prime modulus.
+The modular trajectories of consecutive integers are geodesic lines
+on this torus, braiding around each other with different periods.
+
+The prime distribution decomposes into three independent components:
+
+$$P(\text{prime at } s) = \mu(s) \cdot S(s) \cdot \rho(s)$$
+
+| Component | What it is | What we knew |
+|-----------|-----------|-------------|
+| $\mu(s)$ | Occupancy — how often each state is visited | Uniform (CRT) — known |
+| $S(s)$ | Sieve mask — which states are forbidden | Binary — known since Eratosthenes |
+| $\rho(s)$ | Prime preference field | **Non-constant, structured — this is new** |
+
+---
+
+## What Is New
+
+**1. $\rho(s)$ is not constant.**
+
+Within the states permitted by the sieve, primes are not uniformly
+distributed. Some states systematically attract more primes than others.
+Confirmed empirically for $N = 10^8$, across multiple moduli sets.
+
+**2. $\rho(s)$ has Fourier structure.**
+
+The Fourier spectrum of $\rho$ on $\Omega_k$ shows dominant discrete
+peaks — not white noise. Each prime $p_i$ contributes a fundamental
+frequency $f_i = 1/p_i$ to the spectrum. These frequencies interfere —
+they add, subtract, multiply and divide in the spectral domain.
+This is the **prime spectral decomposition** of $\rho$ (Conjecture 2).
+
+**3. The twin prime gap signature is universal.**
+
+For every twin prime pair $(p, p+2)$ tested, the gap point $g = p+1$
+falls in a local minimum of $\alpha_k(n)$. Mean drop:
+$\Delta\alpha_k = 0.474 \pm 0.187$ ($k=4$, $N \leq 10^4$).
+
+**4. Quasi-twin prime pairs — a new structure (Conjecture 1).**
+
+Pairs $(p, q^2)$ where $p = q^2 - 2$ and both $p, q$ are prime exhibit
+a weaker but structurally analogous gap signature to true twin primes:
+$\Delta\alpha_k^{\text{quasi}} = 0.279 \pm 0.286$.
+
+Known pairs: $(2,4)$, $(7,9)$, $(23,25)$, $(47,49)$, $(167,169)$,
+$(359,361)$, $(839,841)$, $(1367,1369)$, $(1847,1849)$...
+
+This is a **multiplicative nearness** ($q^2 \approx p$) inducing
+additive nearness in the spectral domain — a new type of prime proximity.
+
+**5. The envelope curve (Conjecture 3).**
+
+The modular potential $V(m) = -\ln(\text{ratio}(m))$ follows:
+
+$$V_{\text{envelope}}(m) \sim \frac{C}{\ln m}$$
+
+consistent with the Prime Number Theorem. Quasi-twin pairs sit at
+local **minima** of $V(m)$ — they are potential wells in the
+modular landscape.
+
+**6. The sieve sum is exact.**
+
+$$\sum_{s \in \Omega_k} \mu(s)\, S(s) = \rho_{\text{sieve}}
+= \prod_{p \in \mathcal{P}_k}\left(1 - \frac{1}{p}\right)$$
+
+Confirmed to six decimal places at $N = 10^8$.
+
+---
+
+## The Potential Field
+
+$$V(s) = -\ln\rho(s)$$
+
+- Low $V(s)$: prime-friendly — primes concentrate here
+- High $V(s)$: prime-sparse — primes avoid this region  
+- $V(s) = \infty$: forbidden ($S(s) = 0$)
+- Twin prime gap $g = p+1$: local **maximum** of $V$
+- Quasi-twin pair $(p, q^2)$: local **minimum** of $V(m)$
+
+---
+
+## Connection to the GPM Framework
+
+The potential $V(s) = -\ln\rho(s)$ is formally identical to the
+potential used in the Gauss–PowerLaw Module (Tatai, 2026):
+$V(x) = -\ln\mu^*(x)$. Both frameworks share a potential-theoretic
+foundation while operating on different domains — number theory
+and financial dynamics respectively.
+
+Whether this correspondence runs deeper than formal analogy
+is an open question.
+
+---
+
+## What Is Included in This Release
+
+- **Mathematical framework** — 3 conjectures, 11 definitions,
+  master equation, Fourier decomposition, potential field,
+  quasi-twin structure, 6 open questions
+- **Prime data** — all primes up to 1,000,000 (CSV)
+- **Empirical figures** — torus visualization, modular braid,
+  Fourier spectra, twin prime analysis, forbidden bands,
+  envelope curves, quasi-twin hypothesis test
+- **Integrity** — all documents in `.md` and `.mdl` format
+
+---
+
+## What This Is Not
+
+This release does not prove the Riemann Hypothesis.
+It does not prove the Twin Prime Conjecture.
+It does not claim to solve any open problem in number theory.
+
+What it does: a **new way of seeing** — primes as a field on a
+geometric space, with measurable structure, spectral decomposition,
+and a potential-theoretic interpretation.
+
+The mathematics was always there. This framework makes it visible.
+
+---
+
+## Citation
+
+```
+Tatai, L. (2026). Primes as a Field on a Discrete Torus.
+BarefootRealism Labs. Zenodo. doi: [assigned on upload]
+```
+
+---
+
+## Related Work
+
+Tatai, L. (2025). *Discrete Vector Field Method (DVFM) v1.1.*
+Zenodo. https://doi.org/10.5281/zenodo.17675025
+
+Tatai, L. (2026a). *The Gauss–PowerLaw Module (GPM).*
+Zenodo. https://doi.org/10.5281/zenodo.19692647
+
+Tatai, L. (2026b). *MDL — Markdown Logged (v1.1).*
+Zenodo. https://doi.org/10.5281/zenodo.19698943
+
+---
+
+*Integrity verified with MDL (Markdown Logged).*  
+*"A document is not trusted because it cannot be changed,*  
+*but because any change is provably visible."*

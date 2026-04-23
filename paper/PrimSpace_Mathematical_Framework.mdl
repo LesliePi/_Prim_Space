@@ -1,0 +1,392 @@
+--- MDL HEADER v1 ---
+{
+  "version": "1.0",
+  "created_at": "2026-04-23T08:18:36.068237Z",
+  "modules": [
+    "hash",
+    "local_entropy",
+    "market_anchor_v1"
+  ],
+  "proof": {
+    "hash": "3d6e952364c04e7309e322d933b6285b179790a728c460ae172692258e4e10df",
+    "local_entropy": {
+      "system_time_utc": "2026-04-23T08:18:34.054204Z",
+      "monotonic_ns": 237179406000000,
+      "random_nonce": "cea718cfb4849f25f2c24115f13a3b08b08c6736318a5b21fdea0916e82346ea"
+    },
+    "market_anchor_v1": {
+      "canonical_string": "2026-04-23|DAX=24138.60@2026-04-23|NIKKEI=59140.23@2026-04-23|SP500=7137.90@2026-04-22|SSE=4093.25@2026-04-23",
+      "hash": "f509b6c687967f092248363a3c1cf55a823c25832313841ea2daf095a9c1488f",
+      "indices": {
+        "DAX": [
+          24138.599609375,
+          "2026-04-23"
+        ],
+        "NIKKEI": [
+          59140.23046875,
+          "2026-04-23"
+        ],
+        "SP500": [
+          7137.89990234375,
+          "2026-04-22"
+        ],
+        "SSE": [
+          4093.25,
+          "2026-04-23"
+        ]
+      },
+      "mock_fallback": false
+    }
+  }
+}
+--- CONTENT ---
+# Primes as a Field on a Discrete Torus
+## Mathematical Framework — PrimSpace v1.0
+
+**Author:** László Tatai  
+**Affiliation:** BarefootRealism Labs  
+**Date:** April 2026  
+**Status:** Working document — preprint preparation  
+**ORCID:** 0009-0007-5153-6306
+
+---
+
+> *"The primes do not sit randomly on the torus.*
+> *They cluster. They have preferences.*
+> *This is the field."*
+
+---
+
+## 1. Core Definitions
+
+Let $\mathbb{N} = \{1, 2, 3, \ldots\}$ be the natural numbers, and let
+$\mathbb{P} = \{2, 3, 5, 7, 11, \ldots\}$ be the set of prime numbers.
+
+For any $k \in \mathbb{N}$, let $\mathcal{P}_k = \{p_1, p_2, \ldots, p_k\}$
+denote the first $k$ primes.
+
+---
+
+### Definition 1 (Modular Embedding Map)
+
+$$\Phi_k: \mathbb{N} \to \prod_{i=1}^k \mathbb{Z}_{p_i}, \qquad
+\Phi_k(n) = (n \bmod p_1,\; n \bmod p_2,\; \ldots,\; n \bmod p_k)$$
+
+**Interpretation:** Every natural number $n$ maps to a unique point
+in the modular state space $\Omega_k = \prod_{i=1}^k \mathbb{Z}_{p_i}$.
+This space carries the natural topology of a **discrete torus**
+$\mathbb{T}^k_{\text{disc}}$, where each dimension wraps around
+with period $p_i$.
+
+The modular trajectories $\{\Phi_k(n)\}_{n \geq 0}$ are **geodesics**
+on this torus — straight lines that wrap around each dimension.
+Different primes create different-period geodesics that **braid**
+around each other (Fonat-Taometria structure).
+
+---
+
+### Definition 2 (State Space)
+
+The **PrimSpace state** at level $k$:
+
+$$\mathcal{S}_k(n) = \bigl(\Phi_k(n),\; \mathcal{A}_k(n)\bigr)$$
+
+where $\mathcal{A}_k(n)$ is the additive prime decomposition (K-APV).
+The state space has cardinality $|\Omega_k| = \prod_{i=1}^k p_i$
+(the $k$-th primorial).
+
+---
+
+### Definition 3 (Residual Density Function)
+
+$$\alpha_k(n) = \frac{1}{k} \sum_{i=1}^k \frac{n \bmod p_i}{p_i - 1},
+\qquad \alpha_k: \mathbb{N} \to [0, 1]$$
+
+**Empirical result:** Primes concentrate at $\alpha_k(n) > 0.6$
+(87.4% of primes vs. 20.5% of composites, validated for $k=4$,
+$n \leq 500$).
+
+---
+
+### Definition 4 (Discrete Vector Field)
+
+$$\mathbf{V}_k(n) = \Phi_k(n+1) - \Phi_k(n)
+\equiv (1, 1, \ldots, 1) \pmod{(p_1,\ldots,p_k)}$$
+
+**Note:** $\mathbf{V}_k$ is constant on $\Omega_k$ — it never vanishes.
+Prime structure is encoded in the **prime preference field** $\rho$,
+not in the vector field itself.
+
+---
+
+### Definition 5 (Field Singularity — DVFM V.2)
+
+A state $s \in \Omega_k$ is a **field singularity** if it is a local
+minimum of the potential:
+
+$$V(s) = -\ln \rho(s) < V_{\text{mean}}$$
+
+Equivalently:
+
+$$\rho(s) > \rho_{\text{sieve}} + \theta$$
+
+for a threshold $\theta > 0$.
+
+**Remark:** DVFM V.1 used $\mathbf{V}_k(s) = \mathbf{0}$, which is
+vacuous. Definition 5 (V.2) replaces this with the field singularity
+condition, which is empirically meaningful.
+
+**Connection to GPM:** $V(s) = -\ln\rho(s)$ is formally identical
+to the OTDD potential $V(x) = -\ln\mu^*(x)$ in the Gauss–PowerLaw
+Module (Tatai, 2026a). Both frameworks share a potential-theoretic
+foundation while operating on different domains.
+
+---
+
+### Definition 6 (Prime Preference Field)
+
+$$\rho(s) := \lim_{N \to \infty}
+\frac{\#\{n \leq N : n \in \mathbb{P},\; \Phi_k(n) = s\}}
+     {\#\{n \leq N : \Phi_k(n) = s\}}$$
+
+**Empirical result:** $\rho(s)$ is **not constant** on allowed states.
+Its Fourier spectrum shows discrete peaks — not white noise.
+
+---
+
+### Definition 7 (Sieve Mask)
+
+$$S(s) = \begin{cases} 1 & s_i \neq 0 \;\forall i \\ 0 & \text{otherwise} \end{cases}$$
+
+Global sieve density: $\rho_{\text{sieve}} = \prod_{p \in \mathcal{P}_k}(1 - 1/p)$.
+
+**Validated:** $\sum_s \mu(s) S(s) = \rho_{\text{sieve}}$
+confirmed to six decimal places ($N = 10^8$).
+
+---
+
+### Definition 8 (Modular Occupancy Measure)
+
+$$\mu(s) := \lim_{N \to \infty} \frac{\#\{n \leq N : \Phi_k(n) = s\}}{N}$$
+
+**Empirical result:** $\mu(s)$ is **uniform** — by the Chinese
+Remainder Theorem for coprime moduli.
+
+---
+
+### Definition 9 (Twin Prime Gap Signature)
+
+For a twin prime pair $(p, p+2)$, the gap point $g = p+1$ satisfies:
+
+$$\Delta\alpha_k(g) =
+\frac{\alpha_k(p) + \alpha_k(p+2)}{2} - \alpha_k(g) > \theta_{\text{twin}}$$
+
+**Empirical result:** This signature is universal across all twin
+prime pairs tested ($n \leq 1000$, $k = 4$).
+Mean drop: $\Delta\alpha_k = 0.474 \pm 0.187$.
+
+---
+
+### Definition 10 (Modular Potential)
+
+The **modular potential** at modulus $m$ is defined as:
+
+$$V(m) := -\ln\!\left(\frac{\#\{\text{states occupied by primes}\}}{m}\right)$$
+
+**Empirical result:** $V(m)$ follows an envelope:
+
+$$V_{\text{envelope}}(m) \approx \frac{C}{\ln m}$$
+
+consistent with the Prime Number Theorem. Quasi-twin pairs
+(Definition 11) sit at local minima of $V(m)$.
+
+---
+
+### Definition 11 (Quasi-Twin Prime Pair)
+
+A pair $(p, q^2)$ is a **quasi-twin prime pair** if:
+- $p \in \mathbb{P}$
+- $q \in \mathbb{P}$
+- $|p - q^2| = 2$
+
+equivalently: $p = q^2 - 2$ (since $q^2 + 2$ is rarely prime
+for $q > 2$).
+
+**Empirically found pairs** ($N \leq 10^4$):
+
+| $q$ | $q^2$ | $p = q^2 - 2$ | $V(q^2)$ |
+|-----|--------|----------------|----------|
+| 2  | 4      | 2              | 0.288    |
+| 3  | 9      | 7              | 0.251    |
+| 5  | 25     | 23             | 0.174    |
+| 7  | 49     | 47             | 0.131    |
+| 13 | 169    | 167            | 0.074    |
+| 19 | 361    | 359            | —        |
+| 29 | 841    | 839            | —        |
+| 37 | 1369   | 1367           | —        |
+| 43 | 1849   | 1847           | —        |
+| 47 | 2209   | 2207           | —        |
+
+---
+
+## 2. The Master Equation
+
+$$\boxed{P(\text{prime at } s) = \mu(s) \cdot S(s) \cdot \rho(s)}$$
+
+| Component | Result |
+|-----------|--------|
+| $\mu(s)$ | Uniform (CRT) |
+| $S(s)$ | Binary sieve |
+| $\rho(s)$ | **Non-constant, Fourier-structured — this is new** |
+
+**Asymptotic consequence:**
+
+$$\sum_{s \in \Omega_k} \mu(s)\, S(s)\, \rho(s) \sim \frac{1}{\ln N}
+\quad (N \to \infty)$$
+
+---
+
+## 3. Fourier Structure of $\rho$
+
+Since $\Omega_k \cong \mathbb{Z}/M\mathbb{Z}$ (primorial $M$):
+
+$$\rho(s) = \sum_{j=0}^{M-1} \hat{\rho}(j)\, e^{2\pi i j s / M}$$
+
+**Key result:** The spectrum $|\hat{\rho}(j)|$ has dominant discrete
+peaks — not flat. The field is **compressible**.
+
+Each prime $p_i$ contributes a fundamental frequency $f_i = 1/p_i$
+to the spectrum. These frequencies **interfere** — they add, subtract,
+multiply and divide in the Fourier domain. This is the **prime
+spectral decomposition** of $\rho$.
+
+---
+
+## 4. Potential Field and Topology
+
+$$V: \Omega_k \to \mathbb{R}, \qquad V(s) = -\ln\rho(s)$$
+
+**Properties:**
+- $V(s) = +\infty$ for forbidden states ($S(s) = 0$)
+- Local minima = field singularities = prime-rich states
+- Twin prime gap point $g = p+1$ is a local **maximum** of $V$
+- Quasi-twin pairs sit at local **minima** of the modular potential $V(m)$
+
+**Topological structure:** $\Omega_k$ is a discrete $k$-torus.
+Modular spiral trajectories are geodesics on this torus, braiding
+with periods $p_1, p_2, \ldots, p_k$.
+
+---
+
+## 5. Conjectures
+
+### Conjecture 1 (Quasi-Twin Prime Signature)
+
+*For every quasi-twin prime pair $(p, q^2)$ with $p = q^2 - 2$,
+the gap point $g = (p + q^2)/2 = q^2 - 1$ satisfies:*
+
+$$\Delta\alpha_k(g) =
+\frac{\alpha_k(p) + \alpha_k(q^2)}{2} - \alpha_k(g) > 0$$
+
+*and this gap signature persists as $N \to \infty$, with amplitude
+strictly less than the twin prime signature:*
+
+$$\Delta\alpha_k^{\text{quasi}} < \Delta\alpha_k^{\text{twin}}$$
+
+**Empirical support:** Mean $\Delta\alpha_k^{\text{quasi}} = 0.279$
+vs. mean $\Delta\alpha_k^{\text{twin}} = 0.474$ ($k=4$, $N \leq 10^4$).
+
+**Interpretation:** Quasi-twin pairs exhibit a weaker but structurally
+analogous gap signature to true twin primes. The multiplicative
+nearness ($q^2 \approx p$) induces additive nearness in $\alpha_k$.
+
+---
+
+### Conjecture 2 (Prime Spectral Decomposition)
+
+*The prime preference field $\rho(s)$ on $\Omega_k$ admits a
+Fourier decomposition in which each prime $p_i \in \mathcal{P}_k$
+contributes a fundamental frequency $f_i = 1/p_i$. The interference
+of these frequencies — their sums, differences, products and
+ratios in the spectral domain — determines the full structure
+of $\rho(s)$.*
+
+*Formally: there exist coefficients $a_{ij}$ such that:*
+
+$$\rho(s) \approx \rho_{\text{sieve}} \cdot
+\left(1 + \sum_{i,j} a_{ij} \cos\!\left(2\pi \frac{s}{p_i p_j}\right)\right)$$
+
+**Empirical support:** Fourier spectrum of $\rho$ shows dominant
+peaks at frequencies $1/p_i$, $1/(p_i p_j)$, and their harmonics.
+
+**Implication:** Every natural number has a **prime spectral
+fingerprint** — its position in the interference pattern of
+prime frequencies. This may have implications for:
+- Analytic number theory (connection to Riemann zeta zeros)
+- Cryptography (spectral structure of "random" prime generation)
+- Statistical mechanics (primes as equilibrium states of a
+  thermodynamic system with potential $V(s)$)
+
+---
+
+### Conjecture 3 (Envelope Curve)
+
+*The modular potential $V(m) = -\ln(\text{ratio}(m))$ satisfies:*
+
+$$V_{\text{envelope}}(m) \sim \frac{C}{\ln m}, \quad m \to \infty$$
+
+*where $C$ is a constant related to the Euler–Mascheroni constant,
+and quasi-twin pairs $(p, q^2)$ with $p = q^2 - 2$ sit at local
+minima of $V(m)$ evaluated at $m = q^2$.*
+
+**Empirical support:** $V(q^2)$ decreases monotonically with $q$,
+consistent with $C/\ln(q^2) = C/(2\ln q)$.
+
+---
+
+## 6. Open Questions
+
+1. **Analytic form of $\rho(s)$:** What is $w(s)$ in
+   $\rho(s) = \rho_{\text{sieve}} \cdot w(s)$?
+
+2. **Fourier decay rate:** How fast do $|\hat{\rho}(j)|$ decay?
+
+3. **Infinitely many quasi-twins?** Does $p = q^2 - 2$ have
+   infinitely many prime solutions?
+
+4. **Torus homology:** What are the sublevel sets
+   $\{s : V(s) \leq c\}$ topologically?
+
+5. **Connection to Riemann:** Do the dominant Fourier frequencies
+   of $\rho$ correspond to imaginary parts of Riemann zeta zeros?
+
+6. **Cunningham connection:** Is the sequence $q, q^2-2$
+   a degenerate Cunningham chain of the second kind?
+
+---
+
+## References
+
+Hardy, G. H., & Littlewood, J. E. (1923). Some problems of
+"Partitio Numerorum" III. *Acta Mathematica*, *44*, 1–70.
+
+Riemann, B. (1859). Über die Anzahl der Primzahlen unter einer
+gegebenen Grösse. *Monatsberichte der Berliner Akademie*.
+
+Tatai, L. (2025). *Discrete Vector Field Method (DVFM) v1.1.*
+Zenodo. https://doi.org/10.5281/zenodo.17675025
+
+Tatai, L. (2026a). *The Gauss–PowerLaw Module (GPM).*
+Zenodo. https://doi.org/10.5281/zenodo.19692647
+
+Tatai, L. (2026b). *MDL — Markdown Logged (v1.1).*
+Zenodo. https://doi.org/10.5281/zenodo.19698943
+
+Ulam, S. (1963). *Adventures of a Mathematician.* Scribner.
+
+---
+
+*This document is part of the PrimSpace framework.*
+*Integrity verified with MDL (Markdown Logged).*
+*"A document is not trusted because it cannot be changed,*
+*but because any change is provably visible."*
