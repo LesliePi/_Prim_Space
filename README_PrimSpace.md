@@ -40,11 +40,21 @@ _Prime_Space/
 ├── requirements.txt                   # Python dependencies
 ├── LICENSE
 │
-├── prim_core_engine.py                # Core modular space engine
-├── Primspace_Core_Engine_v3_0.py      # Extended engine v3.0
-├── primspace_core_engine_v3_1.py      # Extended engine v3.1
-├── PRIME_001.py                       # Main analysis pipeline
-├── Ulam_Spiral_in_DVFM.py            # Ulam spiral implementation
+│
+├── core/                          
+│   ├── prim_core_engine.py               # Core modular space engine
+│   ├── prime_analysis.py                 # Analysis pipeline
+│   ├── Primspace_Core_Engine_v3_0.py     # Extended engine v3.0
+│   └── primspace_core_engine_v3_1.py     # Extended engine v3.1
+│                      
+├── analysis/                      
+│   ├── PRIME_001.py                      # Main analysis pipeline
+│   ├── primspace_deep_analysis.py
+│   └── primspace_examples.py      
+│
+├── visualizations/      
+│   ├── Ulam_Spiral_in_DVFM.py            # Ulam spiral implementation
+│   └── primspace_visualizations.py
 │
 ├── paper/
 │   └── PrimSpace_Mathematical_Framework.md
